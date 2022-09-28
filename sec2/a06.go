@@ -7,27 +7,36 @@ import (
 	"strconv"
 )
 
-func nextInt(scanner *bufio.Scanner) int {
-	scanner.Scan()
-	text := scanner.Text()
+type Scanner struct {
+	*bufio.Scanner
+}
+
+func NewScanner() *Scanner {
+	return &Scanner{
+		bufio.NewScanner(os.Stdin),
+	}
+}
+
+func (s *Scanner) nextInt() int {
+	s.Scan()
+	text := s.Text()
 	n, _ := strconv.Atoi(text)
 	return n
 }
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := NewScanner()
 	scanner.Split(bufio.ScanWords)
 
-	N, Q := nextInt(scanner), nextInt(scanner)
+	N, Q := scanner.nextInt(), scanner.nextInt()
 
 	sumArray := make([]int, N+1)
-	sumArray = append(sumArray, 0)
 	for i := 0; i < N; i++ {
-		sumArray[i+1] = sumArray[i] + nextInt(scanner)
+		sumArray[i+1] = sumArray[i] + scanner.nextInt()
 	}
 
 	for i := 0; i < Q; i++ {
-		start, end := nextInt(scanner), nextInt(scanner)
+		start, end := scanner.nextInt(), scanner.nextInt()
 		fmt.Printf("%d\n", sumArray[end]-sumArray[start-1])
 	}
 }
