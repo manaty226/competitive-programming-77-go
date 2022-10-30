@@ -29,19 +29,6 @@ func (s *Scanner) NextInt() int {
 }
 
 func (s *Scanner) NextString() string {
-	// line := ""
-
-	// for {
-	// 	l, p, e := s.ReadLine()
-	// 	if e != nil {
-	// 		return ""
-	// 	}
-	// 	line += string(l)
-	// 	if !p {
-	// 		break
-	// 	}
-	// }
-	// return line
 	s.Scan()
 	return s.Text()
 }
