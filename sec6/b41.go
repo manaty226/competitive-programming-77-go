@@ -44,7 +44,7 @@ func maxInts(a, b int) int {
 func main() {
 	s := NewScanner()
 	X, Y := s.NextInt(), s.NextInt()
-	answer := [][2]int{[2]int{X, Y}}
+	answer := [][2]int{{X, Y}}
 
 	if X == 1 && Y == 1 {
 		fmt.Printf("%d \n", 0)
