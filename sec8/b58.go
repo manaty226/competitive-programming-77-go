@@ -79,35 +79,16 @@ func (t *RMQ) recursiveQuery(l, r, a, b, u int) int {
 	}
 	if l <= a && b <= r {
 		return t.tree[u]
+	} else {
+		m := (a + b) / 2
+		answerL := t.recursiveQuery(l, r, a, m, u*2)
+		answerR := t.recursiveQuery(l, r, m, b, u*2+1)
+		return minInts(answerL, answerR)
 	}
-	m := (a + b) / 2
-	answerL := t.recursiveQuery(l, r, a, m, u*2)
-	answerR := t.recursiveQuery(l, r, m, b, u*2+1)
-	return minInts(answerL, answerR)
 }
 
 func (t *RMQ) Query(l, r int) int {
-	l += t.size
-	r += t.size
-	answer := INF
-	for l < r {
-		if l&1 == 1 {
-			if answer > t.tree[l] {
-				answer = t.tree[l]
-			}
-			l += 1
-		}
-		if r&1 == 1 {
-			r -= 1
-			if answer > t.tree[r] {
-				answer = t.tree[r]
-			}
-		}
-		l >>= 1
-		r >>= 1
-	}
-	return answer
-	// return t.recursiveQuery(l, r, 1, t.size+1, 1)
+	return t.recursiveQuery(l, r, 0, t.size, 1)
 }
 
 func main() {
