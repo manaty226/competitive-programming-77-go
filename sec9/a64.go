@@ -130,11 +130,12 @@ func main() {
 		current[i] = INF
 	}
 
-	q := &CostHeap{Cost{
+	q := &CostHeap{}
+	heap.Init(q)
+	heap.Push(q, Cost{
 		id:   0,
 		cost: current[0],
-	}}
-	heap.Init(q)
+	})
 
 	for q.Len() != 0 {
 		cost := heap.Pop(q).(Cost)
@@ -160,8 +161,9 @@ func main() {
 	for _, c := range current {
 		if c == INF {
 			fmt.Println("-1")
+		} else {
+			fmt.Println(c)
 		}
-		fmt.Println(c)
 	}
 
 }
