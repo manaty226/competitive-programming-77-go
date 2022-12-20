@@ -79,21 +79,51 @@ func (uf *UnionFind) isSameRoot(u, v int) bool {
 
 func main() {
 	s := NewScanner()
-	N, Q := s.NextInt(), s.NextInt()
+	N, M := s.NextInt(), s.NextInt()
+	edges := make([][2]int, M)
+	for i := 0; i < M; i++ {
+		a, b := s.NextInt()-1, s.NextInt()-1
+		edges[i] = [2]int{a, b}
+	}
 
 	UF := NewUnionFind(N)
 
+	Q := s.NextInt()
+	queries := make([][]int, Q)
+	isBreak := make([]bool, M)
 	for i := 0; i < Q; i++ {
-		q1, q2, q3 := s.NextInt(), s.NextInt()-1, s.NextInt()-1
+		q1 := s.NextInt()
 		if q1 == 1 {
-			UF.unite(q2, q3)
+			en := s.NextInt() - 1
+			queries[i] = []int{q1, edges[en][0], edges[en][1]}
+			isBreak[en] = true
 		} else {
-			if UF.isSameRoot(q2, q3) {
-				fmt.Println("Yes")
+			a, b := s.NextInt()-1, s.NextInt()-1
+			queries[i] = []int{q1, a, b}
+		}
+	}
+
+	for i, b := range isBreak {
+		if !b {
+			UF.unite(edges[i][0], edges[i][1])
+		}
+	}
+
+	answer := []string{}
+	for i := Q - 1; i >= 0; i-- {
+		if queries[i][0] == 1 {
+			UF.unite(queries[i][1], queries[i][2])
+		} else {
+			if UF.isSameRoot(queries[i][1], queries[i][2]) {
+				answer = append(answer, "Yes")
 			} else {
-				fmt.Println("No")
+				answer = append(answer, "No")
 			}
 		}
+	}
+
+	for i := len(answer) - 1; i >= 0; i-- {
+		fmt.Println(answer[i])
 	}
 
 }
